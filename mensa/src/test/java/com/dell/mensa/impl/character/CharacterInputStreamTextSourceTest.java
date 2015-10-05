@@ -63,6 +63,7 @@ public class CharacterInputStreamTextSourceTest extends AbstractCharacterTextSou
 		try {
 			final OutputStreamWriter writer = new OutputStreamWriter(fos, charset);
 			try {
+				writer.write(text_);
 				final InputStream inputStream = new FileInputStream(file);
 				return createTextSource(inputStream, charset);
 			} finally {

@@ -440,7 +440,8 @@ public abstract class AbstractCharacterTextSourceTest
 		textSource.open();
 		for (int i = 0; i < expectedText.length(); i++)
 		{
-			Assert.assertFalse(textSource.isEof());
+			Assert.assertFalse("Should not be EOF yet at character index " + i + " of " + (expectedText.length() - 1),
+					textSource.isEof());
 			// Can call multiple times
 			Assert.assertFalse(textSource.isEof());
 
