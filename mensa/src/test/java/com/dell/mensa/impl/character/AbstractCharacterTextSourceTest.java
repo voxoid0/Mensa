@@ -15,10 +15,12 @@ package com.dell.mensa.impl.character;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.dell.mensa.ITailBuffer;
 import com.dell.mensa.ITextSource;
 
@@ -664,7 +666,7 @@ public abstract class AbstractCharacterTextSourceTest
 	{
 		textSource.open();
 
-		final Map<Long, Character> symbols = new HashMap<>();
+		final Map<Long, Character> symbols = new HashMap<Long, Character>();
 
 		// Read half of the input into the text buffers.
 		for (int i = 0; i < expectedText.length() / 2; ++i)

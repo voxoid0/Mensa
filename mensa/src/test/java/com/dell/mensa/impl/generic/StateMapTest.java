@@ -21,11 +21,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IFactory;
 import com.dell.mensa.IGotoFunction;
@@ -65,7 +67,7 @@ public class StateMapTest
 	 */
 	private Map<Character, Integer> mockEdgeMap()
 	{
-		final Map<Character, Integer> map = new HashMap<>();
+		final Map<Character, Integer> map = new HashMap<Character, Integer>();
 
 		map.put(null, randomState());
 		for (int i = 0; i < NUM_SYMBOLS; i++)
@@ -86,7 +88,7 @@ public class StateMapTest
 	 */
 	private Map<Integer, Map<Character, Integer>> mockStateMap()
 	{
-		final Map<Integer, Map<Character, Integer>> map = new HashMap<>();
+		final Map<Integer, Map<Character, Integer>> map = new HashMap<Integer, Map<Character, Integer>>();
 
 		for (int state = 0; state < NUM_STATES; state++)
 		{
@@ -127,7 +129,7 @@ public class StateMapTest
 	@Parameterized.Parameters
 	public static Collection<Object[]> generateData()
 	{
-		final Collection<Object[]> data = new ArrayList<>();
+		final Collection<Object[]> data = new ArrayList<Object[]>();
 
 		final Object[] factory =
 		{ new Factory<Character>() };
@@ -198,7 +200,7 @@ public class StateMapTest
 		final int[] states = testMap.states();
 		Assert.assertEquals(NUM_STATES, states.length);
 
-		final Set<Integer> uniqueStates = new HashSet<>();
+		final Set<Integer> uniqueStates = new HashSet<Integer>();
 		for (final int state : states)
 		{
 			uniqueStates.add(state);
@@ -304,7 +306,7 @@ public class StateMapTest
 	{
 		Assert.assertEquals(expected_.size(), actual_.states().length);
 
-		final Set<Integer> uniqueStates = new HashSet<>();
+		final Set<Integer> uniqueStates = new HashSet<Integer>();
 		for (final int state : actual_.states())
 		{
 			uniqueStates.add(state);

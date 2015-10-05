@@ -17,9 +17,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.dell.mensa.ITextSource;
 
 /**
@@ -52,11 +54,16 @@ public class CharacterFileTextSourceTest extends AbstractCharacterTextSourceTest
 	@Override
 	protected ITextSource<Character> createTextSource(final String text_) throws IOException
 	{
-		try (final FileOutputStream fos = new FileOutputStream(file);
-				final OutputStreamWriter writer = new OutputStreamWriter(fos, charset))
-		{
-
-			writer.write(text_);
+		final FileOutputStream fos = new FileOutputStream(file);
+		try {
+			final OutputStreamWriter writer = new OutputStreamWriter(fos, charset);
+			try {
+				writer.write(text_);				
+			} finally {
+				writer.close();
+			}
+		} finally {
+			fos.close();
 		}
 
 		return createTextSource(file, charset);

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IStateMap;
 import com.dell.mensa.util.Verify;
@@ -33,7 +34,7 @@ public class StateMap<S> implements IStateMap<S>
 {
 	private static final String PARM_edgeMap = "edgeMap_";
 
-	private final Map<Integer, IEdgeMap<S>> map = new HashMap<>();
+	private final Map<Integer, IEdgeMap<S>> map = new HashMap<Integer, IEdgeMap<S>>();
 
 	// =========================================================================
 	// IStateMap methods
@@ -80,7 +81,7 @@ public class StateMap<S> implements IStateMap<S>
 	@Override
 	public Collection<S> symbols()
 	{
-		final Set<S> set = new HashSet<>();
+		final Set<S> set = new HashSet<S>();
 
 		for (final IEdgeMap<S> edgeMap : map.values())
 		{

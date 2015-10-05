@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import com.dell.mensa.IEdge;
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IGotoFunction;
@@ -56,7 +57,7 @@ public class CharacterCompactEdgeMap implements IEdgeMap<Character>
 	@Override
 	public Collection<IEdge<Character>> getEdges()
 	{
-		final List<IEdge<Character>> edges = new ArrayList<>(n);
+		final List<IEdge<Character>> edges = new ArrayList<IEdge<Character>>(n);
 
 		for (int i = 0; i < n; i++)
 		{
@@ -137,7 +138,7 @@ public class CharacterCompactEdgeMap implements IEdgeMap<Character>
 	public Collection<Integer> getStates()
 	{
 		// Use a set to ensure only unique states are included.
-		final Set<Integer> set = new HashSet<>(n);
+		final Set<Integer> set = new HashSet<Integer>(n);
 		for (int i = 0; i < n; i++)
 		{
 			set.add(states[i]);
@@ -150,7 +151,7 @@ public class CharacterCompactEdgeMap implements IEdgeMap<Character>
 	public Collection<Character> getSymbols()
 	{
 		// Use an array because we already know the symbols are unique.
-		final List<Character> set = new ArrayList<>(n);
+		final List<Character> set = new ArrayList<Character>(n);
 		for (int i = 0; i < n; i++)
 		{
 			final char key = symbols[i];
@@ -165,7 +166,7 @@ public class CharacterCompactEdgeMap implements IEdgeMap<Character>
 	// =========================================================================
 	private static IEdge<Character> createEdge(final char symbol_, final int state_)
 	{
-		return new Edge<>(symbol_ == NULL_SYMBOL ? null : Character.valueOf(symbol_), state_);
+		return new Edge<Character>(symbol_ == NULL_SYMBOL ? null : Character.valueOf(symbol_), state_);
 	}
 
 	private void expand()

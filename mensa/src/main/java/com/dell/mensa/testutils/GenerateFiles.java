@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+
 import com.dell.mensa.util.LoremIpsum;
 
 /**
@@ -116,20 +117,26 @@ public class GenerateFiles
 	 */
 	private String[] loadKeywords(final String kewordResource_) throws IOException
 	{
-		final List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<String>();
 
 		final InputStream is = getClass().getResourceAsStream(kewordResource_);
-		try (final Reader fileReader = new InputStreamReader(is);
-				final BufferedReader reader = new BufferedReader(fileReader))
-		{
-
-			int n = 0;
-			final int max = maxKeywords == 0 ? Integer.MAX_VALUE : maxKeywords;
-			for (String keyword = reader.readLine(); keyword != null && n < max; keyword = reader.readLine())
-			{
-				list.add(keyword);
-				n++;
+		
+		final Reader fileReader = new InputStreamReader(is);
+		try {
+			final BufferedReader reader = new BufferedReader(fileReader);
+			try {
+				int n = 0;
+				final int max = maxKeywords == 0 ? Integer.MAX_VALUE : maxKeywords;
+				for (String keyword = reader.readLine(); keyword != null && n < max; keyword = reader.readLine())
+				{
+					list.add(keyword);
+					n++;
+				}				
+			} finally {
+				reader.close();
 			}
+		} finally {
+			fileReader.close();
 		}
 
 		return list.toArray(new String[list.size()]);
@@ -166,13 +173,17 @@ public class GenerateFiles
 		}
 
 		final File kwFile = new File(dataDir, "keywords.txt");
-		try (final PrintWriter kwWriter = new PrintWriter(kwFile))
+		
+		final PrintWriter kwWriter = new PrintWriter(kwFile);
+		try 
 		{
 
 			for (final String keyword : keywords)
 			{
 				kwWriter.println(keyword);
 			}
+		} finally {
+			kwWriter.close();
 		}
 
 		for (int iSubdir = 0; iSubdir < numSubdirs; iSubdir++)
@@ -219,11 +230,16 @@ public class GenerateFiles
 		{
 			final File idxFile = new File(subdir_, String.format("%04d.idx", iFile_));
 
-			try (final PrintWriter txtWriter = new PrintWriter(txtFile);
-					final PrintWriter idxWriter = new PrintWriter(idxFile))
-			{
-
-				generateFile(txtWriter, idxWriter);
+			final PrintWriter txtWriter = new PrintWriter(txtFile);
+			try {
+				final PrintWriter idxWriter = new PrintWriter(idxFile);
+				try {
+					generateFile(txtWriter, idxWriter);
+				} finally {
+					idxWriter.close();
+				}
+			} finally {
+				txtWriter.close();
 			}
 
 			println(String.format("Created file: %s", txtFile.getAbsolutePath()));

@@ -13,6 +13,7 @@
 package com.dell.mensa.impl.generic;
 
 import java.io.IOException;
+
 import com.dell.mensa.ITailBuffer;
 import com.dell.mensa.ITextSource;
 import com.dell.mensa.util.Verify;
@@ -247,13 +248,13 @@ public abstract class AbstractTextSource<S> implements ITextSource<S>
 
 		position = -1;
 
-		buffer = new TailBuffer<>(BUFFER_CAPACITY);
-		rawBuffer = new TailBuffer<>(BUFFER_CAPACITY);
+		buffer = new TailBuffer<S>(BUFFER_CAPACITY);
+		rawBuffer = new TailBuffer<S>(BUFFER_CAPACITY);
 
-		nextSymbolBuffer = new TailBuffer<>(MAX_NEXT_SYMBOL_SIZE);
+		nextSymbolBuffer = new TailBuffer<S>(MAX_NEXT_SYMBOL_SIZE);
 
-		readOnlyBuffer = new ReadOnlyTailBuffer<>(buffer);
-		readOnlyRawBuffer = new ReadOnlyTailBuffer<>(rawBuffer);
+		readOnlyBuffer = new ReadOnlyTailBuffer<S>(buffer);
+		readOnlyRawBuffer = new ReadOnlyTailBuffer<S>(rawBuffer);
 
 		// Prime the pump!
 		loadNextSymbol();

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 import com.dell.mensa.IFailureFunction;
 import com.dell.mensa.IGotoFunction;
 import com.dell.mensa.util.Verify;
@@ -105,7 +106,7 @@ public class CompactFailureFunction implements IFailureFunction
 	@Override
 	public Set<Integer> getStates()
 	{
-		final Set<Integer> set = new HashSet<>();
+		final Set<Integer> set = new HashSet<Integer>();
 
 		for (int i = 0; i <= maxIndex; i++)
 		{

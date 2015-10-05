@@ -16,6 +16,7 @@ package com.dell.mensa.impl.generic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -36,12 +37,12 @@ public class EdgeTest
 
 	private static Edge<Character> createEdge(final Character symbol_, final int state_)
 	{
-		return new Edge<>(symbol_, state_);
+		return new Edge<Character>(symbol_, state_);
 	}
 
 	private static List<Edge<Character>> allEdges()
 	{
-		final List<Edge<Character>> list = new ArrayList<>(symbols.length * states.length);
+		final List<Edge<Character>> list = new ArrayList<Edge<Character>>(symbols.length * states.length);
 
 		for (final Character symbol : symbols)
 		{

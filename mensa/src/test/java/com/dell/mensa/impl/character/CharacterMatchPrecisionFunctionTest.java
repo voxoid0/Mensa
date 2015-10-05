@@ -16,10 +16,12 @@ package com.dell.mensa.impl.character;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
 import com.dell.mensa.IKeyword;
 import com.dell.mensa.IMatchPrecisionFunction;
 import com.dell.mensa.ITextSource;
@@ -78,7 +80,7 @@ public class CharacterMatchPrecisionFunctionTest
 	@Parameterized.Parameters
 	public static Collection<Object[]> generateData()
 	{
-		final Collection<Object[]> data = new ArrayList<>();
+		final Collection<Object[]> data = new ArrayList<Object[]>();
 
 		add(data, new TestCase("a", MAX));
 		add(data, new TestCase("a", "A", lcMatch()));

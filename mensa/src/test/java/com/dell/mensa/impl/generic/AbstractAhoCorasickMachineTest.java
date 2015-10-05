@@ -18,9 +18,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
+
 import com.dell.mensa.IGotoFunction;
 import com.dell.mensa.IMatch;
 import com.dell.mensa.IMatchPrecisionFunction;
@@ -97,7 +99,7 @@ public abstract class AbstractAhoCorasickMachineTest<S extends Comparable<S>>
 		@Override
 		public MatchCollector<S> match(final ITextSource<S> textSource_) throws IOException
 		{
-			final MatchCollector<S> matchCollector = new MatchCollector<>();
+			final MatchCollector<S> matchCollector = new MatchCollector<S>();
 
 			matchCollector.notifyBeginMatching(wrappedMachine);
 
@@ -133,7 +135,7 @@ public abstract class AbstractAhoCorasickMachineTest<S extends Comparable<S>>
 		@Override
 		public MatchCollector<S> match(final ITextSource<S> textSource_) throws IOException
 		{
-			final MatchCollector<S> matchCollector = new MatchCollector<>();
+			final MatchCollector<S> matchCollector = new MatchCollector<S>();
 			matchCollector.setLimit(limit);
 			numMatches = wrappedMachine.match(textSource_, matchCollector);
 			return logAndReturn(matchCollector);
@@ -239,7 +241,7 @@ public abstract class AbstractAhoCorasickMachineTest<S extends Comparable<S>>
 
 		// Verify the matches using a listener with varying limits.
 		int limit = 0;
-		final List<Match<S>> limitedExpectedMatches = new ArrayList<>();
+		final List<Match<S>> limitedExpectedMatches = new ArrayList<Match<S>>();
 
 		while (limit < expectedMatches_.size())
 		{

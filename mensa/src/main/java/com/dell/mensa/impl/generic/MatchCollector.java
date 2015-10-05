@@ -14,6 +14,7 @@ package com.dell.mensa.impl.generic;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.dell.mensa.IMatch;
 import com.dell.mensa.IMatchListener;
 import com.dell.mensa.util.Verify;
@@ -165,7 +166,7 @@ public class MatchCollector<S extends Comparable<S>> implements IMatchListener<S
 	 */
 	public MatchCollector(final boolean autoReset_)
 	{
-		this.matches = new ArrayList<>();
+		this.matches = new ArrayList<IMatch<S>>();
 		this.autoReset = autoReset_;
 		this.offset = DEFAULT_OFFSET;
 		this.limit = DEFAULT_LIMIT;

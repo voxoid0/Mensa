@@ -16,6 +16,7 @@ package com.dell.mensa.impl.generic;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.dell.mensa.IMatchPrecisionFunction;
 
 /**
@@ -29,7 +30,7 @@ public class DefaultSymbolClassifierTest
 	@Before
 	public void setUp()
 	{
-		classifier = new DefaultSymbolClassifier<>();
+		classifier = new DefaultSymbolClassifier<Byte>();
 	}
 
 	/**

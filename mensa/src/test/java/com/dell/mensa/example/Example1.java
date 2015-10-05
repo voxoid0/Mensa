@@ -14,6 +14,7 @@ package com.dell.mensa.example;
 
 import java.io.IOException;
 import java.util.Iterator;
+
 import com.dell.mensa.IKeywords;
 import com.dell.mensa.IMatch;
 import com.dell.mensa.IMatchListener;
@@ -71,7 +72,7 @@ public final class Example1
 		final CharacterAhoCorasickMachine machine = new CharacterAhoCorasickMachine();
 
 		// Initialize the machine for the desired keywords.
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 		for (final String keyword : KEYWORDS)
 		{
 			keywords.add(new CharacterKeyword(keyword));

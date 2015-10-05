@@ -208,18 +208,24 @@ public class LoremIpsum
 			throw new FileNotFoundException(resource_);
 		}
 
-		try (final Reader fileReader = new InputStreamReader(is);
-				final BufferedReader reader = new BufferedReader(fileReader))
-		{
-			final StringBuilder buf = new StringBuilder();
+		final Reader fileReader = new InputStreamReader(is);
+		try {
+			final BufferedReader reader = new BufferedReader(fileReader);
+			try {
+				final StringBuilder buf = new StringBuilder();
 
-			for (String line = reader.readLine(); line != null; line = reader.readLine())
-			{
-				buf.append(line);
-				buf.append('\n');
+				for (String line = reader.readLine(); line != null; line = reader.readLine())
+				{
+					buf.append(line);
+					buf.append('\n');
+				}
+
+				setText(buf.toString());				
+			} finally {
+				reader.close();
 			}
-
-			setText(buf.toString());
+		} finally {
+			fileReader.close();
 		}
 	}
 
@@ -243,23 +249,29 @@ public class LoremIpsum
 	{
 		Verify.notNull(text_, PARM_text);
 
-		try (final Reader fileReader = new StringReader(text_);
-				final BufferedReader reader = new BufferedReader(fileReader))
-		{
-			final StringBuilder buf = new StringBuilder();
+		final Reader fileReader = new StringReader(text_);
+		try {
+			final BufferedReader reader = new BufferedReader(fileReader);
+			try {
+				final StringBuilder buf = new StringBuilder();
 
-			for (String line = reader.readLine(); line != null; line = reader.readLine())
-			{
-				line = line.trim();
-				if (line.length() > 0)
+				for (String line = reader.readLine(); line != null; line = reader.readLine())
 				{
-					line = line.replaceAll("\\s\\s+", " ");
-					buf.append(line);
-					buf.append('\n');
+					line = line.trim();
+					if (line.length() > 0)
+					{
+						line = line.replaceAll("\\s\\s+", " ");
+						buf.append(line);
+						buf.append('\n');
+					}
 				}
-			}
 
-			return buf.toString().trim();
+				return buf.toString().trim();				
+			} finally {
+				reader.close();
+			}
+		} finally {
+			fileReader.close();
 		}
 	}
 

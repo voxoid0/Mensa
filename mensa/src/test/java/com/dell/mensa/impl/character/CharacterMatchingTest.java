@@ -20,9 +20,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +35,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import com.dell.mensa.IFactory;
 import com.dell.mensa.IKeywords;
 import com.dell.mensa.ISymbolClassifier;
@@ -91,7 +94,7 @@ public class CharacterMatchingTest extends AbstractCharacterAhoCorasickMachineTe
 		{
 			super();
 			this.globalsElement = globalsElement_;
-			this.keywordMap = new HashMap<>();
+			this.keywordMap = new HashMap<String, CharacterKeyword>();
 
 			final NodeList keywordNodes = globalsElement_.getElementsByTagName(TAG_keyword);
 			for (int i = 0; i < keywordNodes.getLength(); ++i)
@@ -118,7 +121,7 @@ public class CharacterMatchingTest extends AbstractCharacterAhoCorasickMachineTe
 		{
 			if (keywords == null)
 			{
-				keywords = new Keywords<>();
+				keywords = new Keywords<Character>();
 				keywords.addAll(keywordMap.values());
 			}
 			return keywords;
@@ -221,7 +224,7 @@ public class CharacterMatchingTest extends AbstractCharacterAhoCorasickMachineTe
 		 */
 		public List<Match<Character>> getExpectedMatches()
 		{
-			final List<Match<Character>> expectedMatches = new ArrayList<>();
+			final List<Match<Character>> expectedMatches = new ArrayList<Match<Character>>();
 
 			final Element symbolsElement = getSingleElementByTagName(testCaseElement, TAG_symbols);
 			if (symbolsElement != null)
@@ -299,7 +302,7 @@ public class CharacterMatchingTest extends AbstractCharacterAhoCorasickMachineTe
 			final Element symbolsElement = getSingleElementByTagName(testCaseElement, TAG_symbols);
 			if (symbolsElement != null)
 			{
-				final IKeywords<Character> keywords = new Keywords<>();
+				final IKeywords<Character> keywords = new Keywords<Character>();
 				keywords.add(createKeyword(symbolsElement));
 				return keywords;
 			}
@@ -309,7 +312,7 @@ public class CharacterMatchingTest extends AbstractCharacterAhoCorasickMachineTe
 			final int nKeywordNodes = keywordNodes.getLength();
 			if (nKeywordNodes > 0)
 			{
-				final IKeywords<Character> keywords = new Keywords<>();
+				final IKeywords<Character> keywords = new Keywords<Character>();
 				for (int i = 0; i < nKeywordNodes; ++i)
 				{
 					final Element keywordElement = (Element) keywordNodes.item(i);
@@ -417,7 +420,7 @@ public class CharacterMatchingTest extends AbstractCharacterAhoCorasickMachineTe
 
 		private Match<Character> createMatch(final CharacterKeyword keyword_, final long start_, final long end_)
 		{
-			return new Match<>(getMachine(), keyword_, start_, end_);
+			return new Match<Character>(getMachine(), keyword_, start_, end_);
 		}
 	}
 
@@ -432,7 +435,9 @@ public class CharacterMatchingTest extends AbstractCharacterAhoCorasickMachineTe
 
 		final String testCasesResource = CharacterMatchingTest.class.getSimpleName() + ".xml";
 		final Document doc;
-		try (final InputStream is = CharacterMatchingTest.class.getResourceAsStream(testCasesResource))
+		
+		final InputStream is = CharacterMatchingTest.class.getResourceAsStream(testCasesResource);
+		try 
 		{
 			if (is == null)
 			{
@@ -442,9 +447,11 @@ public class CharacterMatchingTest extends AbstractCharacterAhoCorasickMachineTe
 			final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			final DocumentBuilder db = dbf.newDocumentBuilder();
 			doc = db.parse(is);
+		} finally {
+			is.close();
 		}
 		doc.getDocumentElement().normalize();
-		final Collection<Object[]> data = new ArrayList<>();
+		final Collection<Object[]> data = new ArrayList<Object[]>();
 
 		final Element documentElenent = doc.getDocumentElement();
 		final Element globalElement = getSingleElementByTagName(documentElenent, TAG_globals);

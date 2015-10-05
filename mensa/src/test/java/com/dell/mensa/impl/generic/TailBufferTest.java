@@ -15,6 +15,7 @@ package com.dell.mensa.impl.generic;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.dell.mensa.ITailBuffer;
 
 /**
@@ -59,7 +60,7 @@ public class TailBufferTest
 	@Before
 	public void setUp()
 	{
-		buffer = new TailBuffer<>(CAPACITY);
+		buffer = new TailBuffer<Integer>(CAPACITY);
 	}
 
 	// =========================================================================
@@ -68,7 +69,7 @@ public class TailBufferTest
 	@Test
 	public void testBasics()
 	{
-		buffer = new TailBuffer<>(3);
+		buffer = new TailBuffer<Integer>(3);
 
 		Assert.assertEquals(0, buffer.start());
 		Assert.assertEquals(0, buffer.end());
@@ -159,7 +160,7 @@ public class TailBufferTest
 	@Test
 	public void testCtor()
 	{
-		final ITailBuffer<Integer> t = new TailBuffer<>();
+		final ITailBuffer<Integer> t = new TailBuffer<Integer>();
 		Assert.assertEquals(TailBuffer.DEFAULT_CAPACITY, t.capacity());
 		Assert.assertEquals(0, t.start());
 		Assert.assertEquals(0, t.end());
@@ -190,7 +191,7 @@ public class TailBufferTest
 	@Test
 	public void testCapacity()
 	{
-		Assert.assertEquals(TailBuffer.DEFAULT_CAPACITY, new TailBuffer<>().capacity());
+		Assert.assertEquals(TailBuffer.DEFAULT_CAPACITY, new TailBuffer<Integer>().capacity());
 		Assert.assertEquals(CAPACITY, buffer.capacity());
 	}
 

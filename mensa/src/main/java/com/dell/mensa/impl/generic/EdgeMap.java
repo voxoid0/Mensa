@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import com.dell.mensa.IEdge;
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IGotoFunction;
@@ -48,7 +49,7 @@ public class EdgeMap<S> implements IEdgeMap<S>
 	// =========================================================================
 	public EdgeMap()
 	{
-		this.map = new HashMap<>();
+		this.map = new HashMap<S, Integer>();
 	}
 
 	/**
@@ -57,7 +58,7 @@ public class EdgeMap<S> implements IEdgeMap<S>
 	 */
 	public EdgeMap(final int initialCapacity_)
 	{
-		this.map = new HashMap<>(initialCapacity_);
+		this.map = new HashMap<S, Integer>(initialCapacity_);
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class EdgeMap<S> implements IEdgeMap<S>
 	 */
 	public EdgeMap(final int initialCapacity_, final float loadFactor_)
 	{
-		this.map = new HashMap<>(initialCapacity_, loadFactor_);
+		this.map = new HashMap<S, Integer>(initialCapacity_, loadFactor_);
 	}
 
 	// =========================================================================
@@ -77,7 +78,7 @@ public class EdgeMap<S> implements IEdgeMap<S>
 	@Override
 	public Collection<IEdge<S>> getEdges()
 	{
-		final List<IEdge<S>> set = new ArrayList<>(map.size());
+		final List<IEdge<S>> set = new ArrayList<IEdge<S>>(map.size());
 		for (final Entry<S, Integer> entry : map.entrySet())
 		{
 			set.add(createEdge(entry.getKey(), entry.getValue()));
@@ -127,7 +128,7 @@ public class EdgeMap<S> implements IEdgeMap<S>
 	@Override
 	public Set<Integer> getStates()
 	{
-		return Collections.unmodifiableSet(new HashSet<>(map.values()));
+		return Collections.unmodifiableSet(new HashSet<Integer>(map.values()));
 	}
 
 	@Override
@@ -141,7 +142,7 @@ public class EdgeMap<S> implements IEdgeMap<S>
 	// =========================================================================
 	private IEdge<S> createEdge(final S symbol_, final Integer state_)
 	{
-		return new Edge<>(symbol_, state_);
+		return new Edge<S>(symbol_, state_);
 	}
 
 	private static final int xformNull(final Integer state_)

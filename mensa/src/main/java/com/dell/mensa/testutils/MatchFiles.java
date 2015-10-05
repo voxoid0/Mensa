@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IFactory;
 import com.dell.mensa.IKeyword;
@@ -80,7 +81,7 @@ public class MatchFiles
 		factory = new CharacterFactory();
 		// classifier = new DefaultSymbolClassifier<>();
 		classifier = new CharacterSymbolClassifier();
-		machine = new AhoCorasickMachine<>(factory, classifier);
+		machine = new AhoCorasickMachine<Character>(factory, classifier);
 
 		maxKeywords = 0; // Zero for unlimited
 		caseSensitive = false;
@@ -161,7 +162,7 @@ public class MatchFiles
 				final String[] list = file_.list();
 				if (list != null)
 				{
-					final Set<String> sortedList = new TreeSet<>();
+					final Set<String> sortedList = new TreeSet<String>();
 					for (final String name : list)
 					{
 						sortedList.add(name);
@@ -207,7 +208,7 @@ public class MatchFiles
 		final Charset charset = Charset.defaultCharset();
 		final ITextSource<Character> textSource = new CharacterFileTextSource(file_, charset);
 
-		final MatchCollector<Character> collector = new MatchCollector<>();
+		final MatchCollector<Character> collector = new MatchCollector<Character>();
 
 		textSource.open();
 		final long t0 = now();
@@ -386,29 +387,34 @@ public class MatchFiles
 	 */
 	private static MatchCollector<Character> loadExpectedMatches(final AhoCorasickMachine<Character> machine_, final File idxFile_) throws IOException
 	{
-		final MatchCollector<Character> expected = new MatchCollector<>();
+		final MatchCollector<Character> expected = new MatchCollector<Character>();
 		expected.notifyBeginMatching(machine_);
 
-		try (final Reader fileReader = new FileReader(idxFile_);
-				final BufferedReader reader = new BufferedReader(fileReader))
-		{
+		final Reader fileReader = new FileReader(idxFile_);
+		try {
+			final BufferedReader reader = new BufferedReader(fileReader);
+			try {
+				final Pattern pattern = Pattern.compile("^([* ])([0-9]+)\\s+([0-9]+)\\s+(.+)$");
 
-			final Pattern pattern = Pattern.compile("^([* ])([0-9]+)\\s+([0-9]+)\\s+(.+)$");
-
-			for (String line = reader.readLine(); line != null; line = reader.readLine())
-			{
-				final Matcher matcher = pattern.matcher(line);
-				if (matcher.matches())
+				for (String line = reader.readLine(); line != null; line = reader.readLine())
 				{
-					// final boolean bNoisy = matcher.group(1).equals("*");
-					final int start = Integer.parseInt(matcher.group(2));
-					final int end = Integer.parseInt(matcher.group(3));
-					final IKeyword<Character> keyword = new CharacterKeyword(matcher.group(4));
+					final Matcher matcher = pattern.matcher(line);
+					if (matcher.matches())
+					{
+						// final boolean bNoisy = matcher.group(1).equals("*");
+						final int start = Integer.parseInt(matcher.group(2));
+						final int end = Integer.parseInt(matcher.group(3));
+						final IKeyword<Character> keyword = new CharacterKeyword(matcher.group(4));
 
-					final Match<Character> match = new Match<>(machine_, keyword, start, end);
-					expected.notifyMatch(match);
-				}
+						final Match<Character> match = new Match<Character>(machine_, keyword, start, end);
+						expected.notifyMatch(match);
+					}
+				}				
+			} finally {
+				reader.close();
 			}
+		} finally {
+			fileReader.close();
 		}
 
 		expected.notifyEndMatching(machine_);
@@ -448,19 +454,24 @@ public class MatchFiles
 		final IKeywords<Character> keywords = factory.createKeywords();
 
 		final File kwFile = new File(dataDir_, "keywords.txt");
-		try (final Reader fileReader = new FileReader(kwFile);
-				final BufferedReader reader = new BufferedReader(fileReader))
-		{
-
-			String keyword;
-			while ((keyword = reader.readLine()) != null)
-			{
-				keywords.add(createKeyword(keyword, caseSensitive));
-				if (keywords.size() == maxKeywords)
+		final Reader fileReader = new FileReader(kwFile);
+		try {
+			final BufferedReader reader = new BufferedReader(fileReader);
+			try {
+				String keyword;
+				while ((keyword = reader.readLine()) != null)
 				{
-					break;
-				}
+					keywords.add(createKeyword(keyword, caseSensitive));
+					if (keywords.size() == maxKeywords)
+					{
+						break;
+					}
+				}				
+			} finally {
+				reader.close();
 			}
+		} finally {
+			fileReader.close();
 		}
 
 		return keywords;

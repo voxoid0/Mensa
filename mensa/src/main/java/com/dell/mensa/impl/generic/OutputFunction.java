@@ -14,6 +14,7 @@ package com.dell.mensa.impl.generic;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.dell.mensa.IFactory;
 import com.dell.mensa.IKeyword;
 import com.dell.mensa.IKeywords;
@@ -41,7 +42,7 @@ public class OutputFunction<S> implements IOutputFunction<S>
 	public OutputFunction(final IFactory<S> factory_)
 	{
 		this.factory = factory_;
-		this.map = new HashMap<>();
+		this.map = new HashMap<Integer, IKeywords<S>>();
 	}
 
 	// =========================================================================

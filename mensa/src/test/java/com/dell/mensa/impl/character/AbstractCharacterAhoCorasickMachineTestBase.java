@@ -15,6 +15,7 @@ package com.dell.mensa.impl.character;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.dell.mensa.IKeyword;
 import com.dell.mensa.IKeywords;
 import com.dell.mensa.ITailBuffer;
@@ -75,7 +76,7 @@ public abstract class AbstractCharacterAhoCorasickMachineTestBase extends Abstra
 			final String rawSymbols_, final String tail_)
 			throws IOException
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 		final IKeyword<Character> keyword = new CharacterKeyword(symbols_, null, flags_);
 		keywords.add(keyword);
 
@@ -99,8 +100,8 @@ public abstract class AbstractCharacterAhoCorasickMachineTestBase extends Abstra
 
 		final ITextSource<Character> textSource = new CharacterStringTextSource(text.toString());
 
-		final List<Match<Character>> expectedMatches = new ArrayList<>();
-		final Match<Character> match = new Match<>(machine_, keyword, headLength, headLength + rawSymbols_.length());
+		final List<Match<Character>> expectedMatches = new ArrayList<Match<Character>>();
+		final Match<Character> match = new Match<Character>(machine_, keyword, headLength, headLength + rawSymbols_.length());
 		add(expectedMatches, match);
 
 		// Try matching without raw symbol reporting.

@@ -15,6 +15,7 @@ package com.dell.mensa.impl.generic;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.dell.mensa.ITailBuffer;
 
 /**
@@ -156,7 +157,7 @@ public class ReadOnlyTailBufferTest
 	public void setUp()
 	{
 		testBuffer = new TestBuffer();
-		roBuffer = new ReadOnlyTailBuffer<>(testBuffer);
+		roBuffer = new ReadOnlyTailBuffer<Object>(testBuffer);
 	}
 
 	// =========================================================================
@@ -171,7 +172,7 @@ public class ReadOnlyTailBufferTest
 	@Test(expected = IllegalArgumentException.class)
 	public void testCtor_IllegalArgument()
 	{
-		new ReadOnlyTailBuffer<>(null);
+		new ReadOnlyTailBuffer<Object>(null);
 	}
 
 	/**

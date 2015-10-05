@@ -14,6 +14,7 @@ package com.dell.mensa.impl.generic;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import com.dell.mensa.IKeyword;
 import com.dell.mensa.impl.character.CharacterKeyword;
 
@@ -46,17 +47,17 @@ public class KeywordAndCharacterKeywordTest
 	private static final String STR_SHE = "she";
 
 	private static Keyword<Character>
-			he = new Keyword<>(HE),
-			she = new Keyword<>(SHE),
+			he = new Keyword<Character>(HE),
+			she = new Keyword<Character>(SHE),
 
-			he_c = new Keyword<>(HE, null, AbstractKeyword.CASE_SENSITIVE),
-			she_c = new Keyword<>(SHE, null, AbstractKeyword.CASE_SENSITIVE),
+			he_c = new Keyword<Character>(HE, null, AbstractKeyword.CASE_SENSITIVE),
+			she_c = new Keyword<Character>(SHE, null, AbstractKeyword.CASE_SENSITIVE),
 
-			he_p = new Keyword<>(HE, null, AbstractKeyword.PUNCTUATION_SENSITIVE),
-			she_p = new Keyword<>(SHE, null, AbstractKeyword.PUNCTUATION_SENSITIVE),
+			he_p = new Keyword<Character>(HE, null, AbstractKeyword.PUNCTUATION_SENSITIVE),
+			she_p = new Keyword<Character>(SHE, null, AbstractKeyword.PUNCTUATION_SENSITIVE),
 
-			he_pc = new Keyword<>(HE, null, AbstractKeyword.CASE_SENSITIVE | AbstractKeyword.PUNCTUATION_SENSITIVE),
-			she_pc = new Keyword<>(SHE, null, AbstractKeyword.CASE_SENSITIVE | AbstractKeyword.PUNCTUATION_SENSITIVE)
+			he_pc = new Keyword<Character>(HE, null, AbstractKeyword.CASE_SENSITIVE | AbstractKeyword.PUNCTUATION_SENSITIVE),
+			she_pc = new Keyword<Character>(SHE, null, AbstractKeyword.CASE_SENSITIVE | AbstractKeyword.PUNCTUATION_SENSITIVE)
 			;
 
 	private static CharacterKeyword
@@ -107,7 +108,7 @@ public class KeywordAndCharacterKeywordTest
 						flags |= AbstractKeyword.PUNCTUATION_SENSITIVE;
 					}
 
-					final IKeyword<Character> k = new Keyword<>(HE, userData, flags);
+					final IKeyword<Character> k = new Keyword<Character>(HE, userData, flags);
 					final IKeyword<Character> ck = new CharacterKeyword(STR_HE, userData, flags);
 
 					Assert.assertEquals(userData, k.getUserData());
@@ -132,7 +133,7 @@ public class KeywordAndCharacterKeywordTest
 	{
 		for (final Object userData : userDatas)
 		{
-			final IKeyword<Character> k = new Keyword<>(HE, userData);
+			final IKeyword<Character> k = new Keyword<Character>(HE, userData);
 			final IKeyword<Character> ck = new CharacterKeyword(STR_HE, userData);
 
 			Assert.assertEquals(userData, k.getUserData());
@@ -153,7 +154,7 @@ public class KeywordAndCharacterKeywordTest
 	@Test
 	public void testCtor_1Arg()
 	{
-		final IKeyword<Character> k = new Keyword<>(HE);
+		final IKeyword<Character> k = new Keyword<Character>(HE);
 		final IKeyword<Character> ck = new CharacterKeyword(STR_HE);
 
 		Assert.assertNull(k.getUserData());
@@ -180,7 +181,7 @@ public class KeywordAndCharacterKeywordTest
 			justification = "Testing null argument")
 	public void testCtor_NullSymbols()
 	{
-		new Keyword<>((Character[]) null);
+		new Keyword<Character>((Character[]) null);
 	}
 
 	@SuppressWarnings(
@@ -189,7 +190,7 @@ public class KeywordAndCharacterKeywordTest
 	public void testCtor_EmptySymbols()
 	{
 		final Integer symbols[] = {};
-		new Keyword<>(symbols);
+		new Keyword<Integer>(symbols);
 	}
 
 	@SuppressWarnings(
@@ -324,8 +325,8 @@ public class KeywordAndCharacterKeywordTest
 	{
 		final String userData = "myData";
 
-		final IKeyword<Character> a = new Keyword<>(HE);
-		final IKeyword<Character> au = new Keyword<>(HE, userData);
+		final IKeyword<Character> a = new Keyword<Character>(HE);
+		final IKeyword<Character> au = new Keyword<Character>(HE, userData);
 		final IKeyword<Character> b = new CharacterKeyword(STR_HE);
 		final IKeyword<Character> bu = new CharacterKeyword(STR_HE, userData);
 

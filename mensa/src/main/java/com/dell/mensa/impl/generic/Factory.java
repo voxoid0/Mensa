@@ -36,7 +36,7 @@ public class Factory<S> implements IFactory<S>
 	@Override
 	public IEdgeMap<S> createEdgeMap()
 	{
-		return new EdgeMap<>();
+		return new EdgeMap<S>();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class Factory<S> implements IFactory<S>
 	@Override
 	public GotoFunction<S> createGotoFunction()
 	{
-		return new GotoFunction<>(this);
+		return new GotoFunction<S>(this);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class Factory<S> implements IFactory<S>
 	@Override
 	public IKeywords<S> createKeywords()
 	{
-		return new Keywords<>();
+		return new Keywords<S>();
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class Factory<S> implements IFactory<S>
 	@Override
 	public NextMoveFunction<S> createNextMoveFunction()
 	{
-		return new NextMoveFunction<>(this);
+		return new NextMoveFunction<S>(this);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class Factory<S> implements IFactory<S>
 	@Override
 	public OutputFunction<S> createOutputFunction()
 	{
-		return new OutputFunction<>(this);
+		return new OutputFunction<S>(this);
 	}
 
 	/**
@@ -103,6 +103,6 @@ public class Factory<S> implements IFactory<S>
 	@Override
 	public IStateMap<S> createStateMap()
 	{
-		return new StateMap<>();
+		return new StateMap<S>();
 	}
 }

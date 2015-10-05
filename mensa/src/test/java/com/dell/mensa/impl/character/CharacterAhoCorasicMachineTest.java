@@ -17,9 +17,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IFactory;
 import com.dell.mensa.IFailureFunction;
@@ -72,10 +74,10 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	public void setUp()
 	{
 		final IFactory<Character> factory = new CharacterFactory();
-		machine = new AhoCorasickMachine<>(factory);
+		machine = new AhoCorasickMachine<Character>(factory);
 		machineEx = new CharacterAhoCorasickMachine();
 
-		figure1Keywords = new OrderedKeywords<>();
+		figure1Keywords = new OrderedKeywords<Character>();
 		figure1Keywords.add(he);
 		figure1Keywords.add(she);
 		figure1Keywords.add(his);
@@ -93,7 +95,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testBuilder()
 	{
-		new AhoCorasickMachine<>(null);
+		new AhoCorasickMachine<Character>(null);
 	}
 
 	/**
@@ -173,7 +175,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	@Test(expected = java.lang.IllegalStateException.class)
 	public void testBuildGotoFunction_GotoAlreadyConsructed()
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 
 		try
 		{
@@ -189,7 +191,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	@Test(expected = java.lang.IllegalStateException.class)
 	public void testBuildGotoFunction_NextMoveAlreadyConsructed()
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 
 		try
 		{
@@ -207,7 +209,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	@Test
 	public void testBuildGotoFunction_NoKeywords()
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 
 		final IGotoFunction<Character> gotoFunction = machine.buildGotoFunction(keywords);
 		Assert.assertNotNull(gotoFunction);
@@ -308,7 +310,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	@Test(expected = java.lang.IllegalStateException.class)
 	public void testBuildFailureFunction_FailureAlreadyConsructed()
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 
 		try
 		{
@@ -326,7 +328,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	@Test(expected = java.lang.IllegalStateException.class)
 	public void testBuildFailureFunction_NextMoveAlreadyConsructed()
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 
 		try
 		{
@@ -345,7 +347,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	@Test()
 	public void testBuildFailureFunction_NoKeywords()
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 		machine.buildGotoFunction(keywords);
 
 		final IFailureFunction failureFunction = machine.buildFailureFunction();
@@ -660,7 +662,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 		final String text = "South University, ANN\n  ARBOR, MICHIGAN";
 		final ITextSource<Character> textSource = new CharacterStringTextSource(text);
 
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 
 		// Loop eight times to cover all permutations of case-sensitivity on each of
 		// three different keywords.
@@ -680,20 +682,20 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 			machineEx.reset();
 			machineEx.build(keywords);
 
-			final List<Match<Character>> expectedMatches = new ArrayList<>();
+			final List<Match<Character>> expectedMatches = new ArrayList<Match<Character>>();
 
 			// Always match "South University"
-			add(expectedMatches, new Match<>(machineEx, southU, 0, 16));
+			add(expectedMatches, new Match<Character>(machineEx, southU, 0, 16));
 
 			if (!annArbor.isCaseSensitive())
 			{
 				// Match "Ann Arbor" when keyword is not case-sensitive
-				add(expectedMatches, new Match<>(machineEx, annArbor, 18, 29));
+				add(expectedMatches, new Match<Character>(machineEx, annArbor, 18, 29));
 			}
 			if (!michigan.isCaseSensitive())
 			{
 				// Match "Michigan" when keyword is not case-sensitive
-				add(expectedMatches, new Match<>(machineEx, michigan, 31, 39));
+				add(expectedMatches, new Match<Character>(machineEx, michigan, 31, 39));
 			}
 
 			verifyMatch(machineEx, textSource, expectedMatches);
@@ -706,7 +708,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 		machine.build(figure1Keywords);
 
 		final ITextSource<Character> textSource = new CharacterStringTextSource("");
-		final IMatchListener<Character> listener = new MatchCollector<>();
+		final IMatchListener<Character> listener = new MatchCollector<Character>();
 
 		machine.match(textSource, listener);
 	}
@@ -775,7 +777,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 	@Test
 	public void testMatch_NotifyLongestMatch() throws IOException
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 
 		final IKeyword<Character> red = new CharacterKeyword("red");
 		keywords.add(red);
@@ -792,22 +794,22 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 		final String text = "They used red paint.";
 		final ITextSource<Character> textSource = new CharacterStringTextSource(text);
 
-		final List<Match<Character>> expectedMatches = new ArrayList<>();
+		final List<Match<Character>> expectedMatches = new ArrayList<Match<Character>>();
 
 		// They used red paint.
 		// ----------1==1
 		// ----------0==3
-		add(expectedMatches, new Match<>(machine, red, 10, 13));
+		add(expectedMatches, new Match<Character>(machine, red, 10, 13));
 
 		// They used red paint.
 		// ----------1========1
 		// ----------0========9
-		add(expectedMatches, new Match<>(machine, redPaint, 10, 19));
+		add(expectedMatches, new Match<Character>(machine, redPaint, 10, 19));
 
 		// They used red paint.
 		// --------------1====1
 		// --------------4====9
-		final Match<Character> matchPaint = new Match<>(machine, paint, 14, 19);
+		final Match<Character> matchPaint = new Match<Character>(machine, paint, 14, 19);
 		add(expectedMatches, matchPaint);
 
 		// By default, all keywords are matched.
@@ -906,55 +908,55 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 		final ITextSource<Character> textSource = new CharacterStringTextSource(text);
 
 		// Create the expected matches, in the expected order.
-		final List<Match<Character>> expectedMatches = new ArrayList<>();
+		final List<Match<Character>> expectedMatches = new ArrayList<Match<Character>>();
 
 		if (isCaseExtensionEnabled || !bUpper_)
 		{
 			// she ushers in his sheet for hers
 			// 0==3
-			add(expectedMatches, new Match<>(machine_, she, 0, 3));
+			add(expectedMatches, new Match<Character>(machine_, she, 0, 3));
 
 			// she ushers in his sheet for hers
 			// _1=3
-			add(expectedMatches, new Match<>(machine_, he, 1, 3), !isWordBreakExtensionEnabled);
+			add(expectedMatches, new Match<Character>(machine_, he, 1, 3), !isWordBreakExtensionEnabled);
 
 			// she ushers in his sheet for hers
 			// _____5==8
-			add(expectedMatches, new Match<>(machine_, she, 5, 8), !isWordBreakExtensionEnabled);
+			add(expectedMatches, new Match<Character>(machine_, she, 5, 8), !isWordBreakExtensionEnabled);
 
 			// she ushers in his sheet for hers
 			// ______6=8
-			add(expectedMatches, new Match<>(machine_, he, 6, 8), !isWordBreakExtensionEnabled);
+			add(expectedMatches, new Match<Character>(machine_, he, 6, 8), !isWordBreakExtensionEnabled);
 
 			// she ushers in his sheet for hers
 			// ______6===1
 			// __________0
-			add(expectedMatches, new Match<>(machine_, hers, 6, 10), !isWordBreakExtensionEnabled);
+			add(expectedMatches, new Match<Character>(machine_, hers, 6, 10), !isWordBreakExtensionEnabled);
 
 			// she ushers in his sheet for hers
 			// ______________1==1
 			// ______________4==7
-			add(expectedMatches, new Match<>(machine_, his, 14, 17));
+			add(expectedMatches, new Match<Character>(machine_, his, 14, 17));
 
 			// she ushers in his sheet for hers
 			// __________________1==2
 			// __________________8==1
-			add(expectedMatches, new Match<>(machine_, she, 18, 21), !isWordBreakExtensionEnabled);
+			add(expectedMatches, new Match<Character>(machine_, she, 18, 21), !isWordBreakExtensionEnabled);
 
 			// she ushers in his sheet for hers
 			// ___________________1=2
 			// ___________________9=1
-			add(expectedMatches, new Match<>(machine_, he, 19, 21), !isWordBreakExtensionEnabled);
+			add(expectedMatches, new Match<Character>(machine_, he, 19, 21), !isWordBreakExtensionEnabled);
 
 			// she ushers in his sheet for hers
 			// ____________________________2=3
 			// ____________________________8=0
-			add(expectedMatches, new Match<>(machine_, he, 28, 30), !isWordBreakExtensionEnabled);
+			add(expectedMatches, new Match<Character>(machine_, he, 28, 30), !isWordBreakExtensionEnabled);
 
 			// she ushers in his sheet for hers
 			// ____________________________2===3
 			// ____________________________8===2
-			add(expectedMatches, new Match<>(machine_, hers, 28, 32));
+			add(expectedMatches, new Match<Character>(machine_, hers, 28, 32));
 		}
 
 		verifyMatch(machine_, textSource, expectedMatches);
@@ -962,7 +964,7 @@ public class CharacterAhoCorasicMachineTest extends AbstractCharacterAhoCorasick
 
 	private void do_testNonNormalWhitespace(final String keyword_)
 	{
-		final IKeywords<Character> keywords = new Keywords<>();
+		final IKeywords<Character> keywords = new Keywords<Character>();
 		keywords.add(new CharacterKeyword(keyword_));
 
 		try

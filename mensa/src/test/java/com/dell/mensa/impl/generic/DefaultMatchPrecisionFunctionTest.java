@@ -13,10 +13,12 @@
 package com.dell.mensa.impl.generic;
 
 import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
 import com.dell.mensa.IKeyword;
 import com.dell.mensa.IMatchPrecisionFunction;
 import com.dell.mensa.ITextSource;
@@ -45,7 +47,7 @@ public class DefaultMatchPrecisionFunctionTest
 	@Before
 	public void setUp() throws Exception
 	{
-		fn = new DefaultMatchPrecisionFunction<>();
+		fn = new DefaultMatchPrecisionFunction<Character>();
 		textSource = new CharacterStringTextSource(TEXT);
 		keyword = new CharacterKeyword(KEYWORD);
 

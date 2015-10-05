@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import com.dell.mensa.IFailureFunction;
 import com.dell.mensa.IGotoFunction;
 import com.dell.mensa.util.Verify;
@@ -31,7 +32,7 @@ public class FailureFunction implements IFailureFunction
 	private static final String PARM_state = "state_";
 	private static final String PARM_failureState = "failureState_";
 
-	private final Map<Integer, Integer> map = new HashMap<>();
+	private final Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 	/*
 	 * (non-Javadoc)

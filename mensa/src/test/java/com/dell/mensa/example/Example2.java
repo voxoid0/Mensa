@@ -14,6 +14,7 @@ package com.dell.mensa.example;
 
 import java.io.IOException;
 import java.util.Iterator;
+
 import com.dell.mensa.IFactory;
 import com.dell.mensa.IKeywords;
 import com.dell.mensa.IMatch;
@@ -79,9 +80,9 @@ public final class Example2
 	public static void main(final String[] args_) throws IOException
 	{
 		final IFactory<String> factory = new Factory<String>();
-		final AhoCorasickMachine<String> machine = new AhoCorasickMachine<>(factory);
+		final AhoCorasickMachine<String> machine = new AhoCorasickMachine<String>(factory);
 
-		final IKeywords<String> keywords = new Keywords<>();
+		final IKeywords<String> keywords = new Keywords<String>();
 		keywords.add(new Keyword<String>(KEYWORD1));
 		keywords.add(new Keyword<String>(KEYWORD2));
 

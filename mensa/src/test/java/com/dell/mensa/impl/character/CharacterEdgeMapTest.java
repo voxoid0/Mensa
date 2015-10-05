@@ -17,11 +17,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
 import com.dell.mensa.IEdge;
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IFactory;
@@ -69,7 +71,7 @@ public class CharacterEdgeMapTest
 		final Character symbol = mockSymbol(i_);
 		final int state = mockState(symbol);
 
-		return new Edge<>(symbol, state);
+		return new Edge<Character>(symbol, state);
 	}
 
 	/**
@@ -116,7 +118,7 @@ public class CharacterEdgeMapTest
 	@Parameterized.Parameters
 	public static Collection<Object[]> generateData()
 	{
-		final Collection<Object[]> data = new ArrayList<>();
+		final Collection<Object[]> data = new ArrayList<Object[]>();
 
 		final Object[] factory =
 		{ new Factory<Character>() };
@@ -156,7 +158,7 @@ public class CharacterEdgeMapTest
 		Assert.assertEquals(NUM_MOCK_EDGES, edges.size());
 
 		// Verify we have the correct edges.
-		final Set<Character> symbols = new HashSet<>();
+		final Set<Character> symbols = new HashSet<Character>();
 		for (final IEdge<Character> edge : edges)
 		{
 			final Character symbol = edge.getSymbol();
@@ -238,7 +240,7 @@ public class CharacterEdgeMapTest
 
 			Assert.assertEquals(
 					i == 0 || i >= NUM_MOCK_EDGES / 2,
-					edges.contains(new Edge<>(symbol, state)));
+					edges.contains(new Edge<Character>(symbol, state)));
 		}
 	}
 
@@ -322,7 +324,7 @@ public class CharacterEdgeMapTest
 		{
 			if (i < NUM_MOCK_EDGES / 2)
 			{
-				final IEdge<Character> edge = new Edge<>(mockSymbol(i), overloadedState);
+				final IEdge<Character> edge = new Edge<Character>(mockSymbol(i), overloadedState);
 				edgeMap.put(edge.getSymbol(), edge.getState());
 			}
 		}

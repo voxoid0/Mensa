@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IFactory;
 import com.dell.mensa.IKeyword;
@@ -154,7 +155,7 @@ public class Benchmark
 
 		factory = new CharacterFactory();
 		classifier = new CharacterSymbolClassifier();
-		machine = new AhoCorasickMachine<>(factory, classifier);
+		machine = new AhoCorasickMachine<Character>(factory, classifier);
 
 		keywords = loadKeywords(keywordsResource);
 
@@ -318,7 +319,7 @@ public class Benchmark
 				final String[] list = file_.list();
 				if (list != null)
 				{
-					final Set<String> sortedList = new TreeSet<>();
+					final Set<String> sortedList = new TreeSet<String>();
 					for (final String name : list)
 					{
 						sortedList.add(name);
@@ -364,7 +365,7 @@ public class Benchmark
 		final Charset charset = Charset.defaultCharset();
 		final ITextSource<Character> textSource = new CharacterFileTextSource(file_, charset);
 
-		final MatchCollector<Character> collector = new MatchCollector<>();
+		final MatchCollector<Character> collector = new MatchCollector<Character>();
 
 		textSource.open();
 		final long t0 = now();
@@ -576,29 +577,34 @@ public class Benchmark
 	 */
 	private static MatchCollector<Character> loadExpectedMatches(final AhoCorasickMachine<Character> machine_, final File idxFile_) throws IOException
 	{
-		final MatchCollector<Character> expected = new MatchCollector<>();
+		final MatchCollector<Character> expected = new MatchCollector<Character>();
 		expected.notifyBeginMatching(machine_);
 
-		try (final Reader fileReader = new FileReader(idxFile_);
-				final BufferedReader reader = new BufferedReader(fileReader))
-		{
+		final Reader fileReader = new FileReader(idxFile_);
+		try {
+			final BufferedReader reader = new BufferedReader(fileReader);
+			try {
+				final Pattern pattern = Pattern.compile("^([* ])([0-9]+)\\s+([0-9]+)\\s+(.+)$");
 
-			final Pattern pattern = Pattern.compile("^([* ])([0-9]+)\\s+([0-9]+)\\s+(.+)$");
-
-			for (String line = reader.readLine(); line != null; line = reader.readLine())
-			{
-				final Matcher matcher = pattern.matcher(line);
-				if (matcher.matches())
+				for (String line = reader.readLine(); line != null; line = reader.readLine())
 				{
-					// final boolean bNoisy = matcher.group(1).equals("*");
-					final int start = Integer.parseInt(matcher.group(2));
-					final int end = Integer.parseInt(matcher.group(3));
-					final IKeyword<Character> keyword = new CharacterKeyword(matcher.group(4));
+					final Matcher matcher = pattern.matcher(line);
+					if (matcher.matches())
+					{
+						// final boolean bNoisy = matcher.group(1).equals("*");
+						final int start = Integer.parseInt(matcher.group(2));
+						final int end = Integer.parseInt(matcher.group(3));
+						final IKeyword<Character> keyword = new CharacterKeyword(matcher.group(4));
 
-					final Match<Character> match = new Match<>(machine_, keyword, start, end);
-					expected.notifyMatch(match);
-				}
+						final Match<Character> match = new Match<Character>(machine_, keyword, start, end);
+						expected.notifyMatch(match);
+					}
+				}				
+			} finally {
+				reader.close();
 			}
+		} finally {
+			fileReader.close();
 		}
 
 		expected.notifyEndMatching(machine_);
@@ -635,20 +641,26 @@ public class Benchmark
 	 */
 	private String[] loadKeywords(final String kewordResource_) throws IOException
 	{
-		final List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<String>();
 
 		final InputStream is = getClass().getResourceAsStream(kewordResource_);
-		try (final Reader fileReader = new InputStreamReader(is);
-				final BufferedReader reader = new BufferedReader(fileReader))
-		{
-
-			int n = 0;
-			final int max = maxKeywords == 0 ? Integer.MAX_VALUE : maxKeywords;
-			for (String keyword = reader.readLine(); keyword != null && n < max; keyword = reader.readLine())
-			{
-				list.add(keyword);
-				n++;
+		
+		final Reader fileReader = new InputStreamReader(is);
+		try {
+			final BufferedReader reader = new BufferedReader(fileReader);
+			try {
+				int n = 0;
+				final int max = maxKeywords == 0 ? Integer.MAX_VALUE : maxKeywords;
+				for (String keyword = reader.readLine(); keyword != null && n < max; keyword = reader.readLine())
+				{
+					list.add(keyword);
+					n++;
+				}				
+			} finally {
+				reader.close();
 			}
+		} finally {
+			fileReader.close();
 		}
 
 		return list.toArray(new String[list.size()]);
@@ -679,12 +691,15 @@ public class Benchmark
 	private void writeKeywords(final File dataDir) throws FileNotFoundException
 	{
 		final File kwFile = new File(dataDir, "keywords.txt");
-		try (final PrintWriter kwWriter = new PrintWriter(kwFile))
+		final PrintWriter kwWriter = new PrintWriter(kwFile);
+		try
 		{
 			for (final String keyword : keywords)
 			{
 				kwWriter.println(keyword);
 			}
+		} finally {
+			kwWriter.close();
 		}
 	}
 
@@ -737,11 +752,16 @@ public class Benchmark
 		{
 			final File idxFile = new File(subdir_, String.format("%04d.idx", iFile_));
 
-			try (final PrintWriter txtWriter = new PrintWriter(txtFile);
-					final PrintWriter idxWriter = new PrintWriter(idxFile))
-			{
-
-				generateFile(txtWriter, idxWriter);
+			final PrintWriter txtWriter = new PrintWriter(txtFile);
+			try {
+				final PrintWriter idxWriter = new PrintWriter(idxFile);
+				try {
+					generateFile(txtWriter, idxWriter);					
+				} finally {
+					idxWriter.close();
+				}
+			} finally {
+				txtWriter.close();
 			}
 
 			println(String.format("Created file: %s", txtFile.getAbsolutePath()));

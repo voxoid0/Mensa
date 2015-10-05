@@ -16,6 +16,7 @@ package com.dell.mensa.impl.character;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IGotoFunction;
 import com.dell.mensa.IStateMap;
@@ -113,7 +114,7 @@ public class CharacterCompactStateMap implements IStateMap<Character>
 	@Override
 	public Set<Character> symbols()
 	{
-		final Set<Character> set = new HashSet<>();
+		final Set<Character> set = new HashSet<Character>();
 
 		for (int i = 0; i <= maxIndex; i++)
 		{

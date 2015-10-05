@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.TreeSet;
+
 import com.dell.mensa.IEdge;
 import com.dell.mensa.IEdgeMap;
 import com.dell.mensa.IFactory;
@@ -512,7 +513,7 @@ public class AhoCorasickMachine<S extends Comparable<S>>
 
 		// Compute the states of depth 1 and enter them into a FIFO queue.
 		// ---------------------------------------------------------------
-		final Queue<Integer> queue = new LinkedList<>();
+		final Queue<Integer> queue = new LinkedList<Integer>();
 		for (final int s : gotoFunction.getEdgeMap(IGotoFunction.START_STATE).getStates())
 		{
 			if (s != IGotoFunction.START_STATE)
@@ -633,7 +634,7 @@ public class AhoCorasickMachine<S extends Comparable<S>>
 
 		nextMoveFunction = factory.createNextMoveFunction();
 
-		final Queue<Integer> queue = new ArrayDeque<>(); // new LinkedList<>();
+		final Queue<Integer> queue = new ArrayDeque<Integer>(); // new LinkedList<>();
 		final Collection<S> symbols = gotoFunction.symbols();
 
 		for (final S a : symbols)
@@ -820,7 +821,7 @@ public class AhoCorasickMachine<S extends Comparable<S>>
 			assert textSource_.isOpen();
 
 			this.textSource = textSource_;
-			this.matches = new ArrayDeque<>();
+			this.matches = new ArrayDeque<IMatch<S>>();
 
 			state = IGotoFunction.START_STATE;
 
@@ -1000,7 +1001,7 @@ public class AhoCorasickMachine<S extends Comparable<S>>
 			Verify.notNull(keyword_, PARM_keyword);
 			this.keyword = keyword_;
 
-			requiredSymbols = new ArrayList<>(keyword_.length());
+			requiredSymbols = new ArrayList<S>(keyword_.length());
 
 			int first = -1;
 			int last = -1;
@@ -1310,7 +1311,7 @@ public class AhoCorasickMachine<S extends Comparable<S>>
 		final Collection<IKeyword<S>> orderedKeywords;
 		if (keywords_.size() > 1)
 		{
-			orderedKeywords = new TreeSet<>(keywordComparator);
+			orderedKeywords = new TreeSet<IKeyword<S>>(keywordComparator);
 			orderedKeywords.addAll(keywords_);
 		}
 		else
@@ -1321,7 +1322,7 @@ public class AhoCorasickMachine<S extends Comparable<S>>
 		// Perform preliminary filtering (i.e., all filtering that depends only on a match
 		// itself and not the a relationship between match candidates) and record longest
 		// match length for subsequent filtering.
-		final List<Match<S>> candidateMatches = new ArrayList<>(orderedKeywords.size());
+		final List<Match<S>> candidateMatches = new ArrayList<Match<S>>(orderedKeywords.size());
 		long lengthThreshold = 0;
 		for (final IKeyword<S> keyword : orderedKeywords)
 		{
@@ -1338,7 +1339,7 @@ public class AhoCorasickMachine<S extends Comparable<S>>
 					lengthThreshold = length;
 				}
 
-				final Match<S> match = new Match<>(this, keyword, start, end);
+				final Match<S> match = new Match<S>(this, keyword, start, end);
 				final double precision = matchPrecisionFunction.eval(keyword, textSource_, start, end);
 				match.setPrecision(precision);
 
